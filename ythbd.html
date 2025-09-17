@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐 雨桐！</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .card {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .card-header {
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px rgba(255, 107, 107, 0.2);
+        }
+        
+        .birthday-cake {
+            font-size: 3rem;
+            animation: bounce 2s infinite;
+        }
+        
+        .message {
+            background: #fff9f9;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .message:before {
+            content: """;
+            font-size: 60px;
+            color: #ff6b6b;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 1.1rem;
+            text-align: left;
+        }
+        
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-style: italic;
+            color: #888;
+            font-weight: bold;
+        }
+        
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            color: #ff6b6b;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff6b6b;
+            opacity: 0;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        
+        .balloon1 {
+            background: #ff6b6b;
+            top: -20px;
+            left: 15%;
+        }
+        
+        .balloon2 {
+            background: #36c;
+            top: -10px;
+            right: 20%;
+        }
+        
+        .balloon3 {
+            background: #2ecc71;
+            bottom: -20px;
+            left: 20%;
+        }
+        
+        .balloon:after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            width: 2px;
+            height: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            transform: translateX(-50%);
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+            100% { transform: translateY(0) rotate(0); }
+        }
+        
+        @keyframes fade {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="balloon balloon1"></div>
+        <div class="balloon balloon2"></div>
+        <div class="balloon balloon3"></div>
+        
+        <div class="card-header">
+            <h1>生日快乐 雨桐！</h1>
+            <div class="birthday-cake">🎂</div>
+        </div>
+        
+        <div class="message">
+            <p>愿你在新的一岁里，想做的事就大胆去做，想去的地方说走就走，痛痛快快玩、开开心心过。相信你一定会遇到更多好运和惊喜哒！</p>
+            <p>也希望你可以一直天天哈哈笑，永远这么勇敢、这么自由、这么拽🥰</p>
+        </div>
+        
+        <div class="signature">
+            <p>From Your BestieBae👭🏻</p>
+        </div>
+        
+        <div class="hearts" id="hearts"></div>
+        <div class="confetti-container" id="confetti"></div>
+    </div>
+
+    <script>
+        // 创建漂浮的心形
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const heartCount = 25;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤';
+                heart.classList.add('heart');
+                
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                
+                heartsContainer.appendChild(heart);
+                
+                // 动画
+                animateHeart(heart);
+            }
+        }
+        
+        function animateHeart(heart) {
+            const duration = Math.random() * 3 + 3;
+            const delay = Math.random() * 2;
+            
+            heart.style.animation = `
+                fade ${duration}s ease-in-out ${delay}s infinite alternate
+            `;
+            
+            // 随机移动
+            setInterval(() => {
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+            }, 3000);
+        }
+        
+        // 创建彩色纸屑
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            const confettiCount = 50;
+            const colors = ['#ff6b6b', '#36c', '#2ecc71', '#ffd700', '#9b59b6'];
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                confettiContainer.appendChild(confetti);
+                
+                // 动画
+                animateConfetti(confetti);
+            }
+        }
+        
+        function animateConfetti(confetti) {
+            const duration = Math.random() * 2 + 2;
+            const delay = Math.random() * 2;
+            
+            confetti.style.animation = `
+                fade ${duration}s ease-in-out ${delay}s infinite alternate
+            `;
+        }
+        
+        // 初始化
+        window.onload = function() {
+            createHearts();
+            createConfetti();
+            
+            // 让蛋糕图标弹跳
+            const cake = document.querySelector('.birthday-cake');
+            cake.classList.add('float');
+        };
+    </script>
+</body>
+</html>
